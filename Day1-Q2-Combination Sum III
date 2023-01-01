@@ -1,0 +1,44 @@
+Problem Link: https://leetcode.com/problems/combination-sum-iii/description/
+Problem Statement:
+Find all valid combinations of k numbers that sum up to n such that the following conditions are true:
+Only numbers 1 through 9 are used.
+Each number is used at most once.
+Return a list of all possible valid combinations. The list must not contain the same combination twice, and the combinations may be returned in any order.
+
+Input: k = 3, n = 7
+Output: [[1,2,4]]
+Explanation:
+1 + 2 + 4 = 7
+There are no other valid combinations.
+
+Solution:
+class Solution {
+public:
+  void combSum(int start,int sum,int n,vector<vector<int>>&res,vector<int>&res2,int k){ //Helper function for our recursive calls
+        //base condition for our answer to be stored in res vector
+        if(sum == n && k == 0){
+            res.push_back(res2);
+            return;
+        }
+        if(sum > n){
+            return;
+        }
+        for(int i=start;i<=9;i++){
+            if(i>n){
+                break;
+            }
+            res2.push_back(i); //Ele of one particular combination of k ele
+            combSum(i+1,sum+i,n,res,res2,k-1); // update ele i.e i,sum and k value 
+            res2.pop_back(); // once you get one combination of k elements then pop the k elements from the res2 vector. so that next combination can be stored in res2
+        }
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<int>res2;       //used to store single combinations of size k
+        vector<vector<int>>res;    // used to store all the combinations formed 
+        combSum(1,0,n,res,res2,k);
+        return res;
+    }
+};
+
+REMARKS:
+You can get runtime errors and wrong answers if you dont mention the crct base conditions and also recursive call where you r updating your ele,sum and k values.
